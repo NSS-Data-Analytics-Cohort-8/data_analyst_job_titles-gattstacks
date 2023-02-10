@@ -33,33 +33,69 @@ WHERE location IN ('TN', 'KY');
 
 SELECT COUNT(star_rating) AS tn_postings_with_4_or_more_stars
 FROM data_analyst_jobs
-WHERE star_rating >= 4 AND location = 'TN';
+WHERE star_rating >= 4 
+	AND location = 'TN';
 	-- 4 
 	
 -- 5.	How many postings in the dataset have a review count between 500 and 1000?
 
 SElECT COUNT(review_count) AS postings_with_review_count_in_between_500_and_1000
 FROM data_analyst_jobs
-WHERE review_count >= 500 AND review_count <= 1000;
+WHERE review_count >= 500 
+	AND review_count <= 1000;
 	-- 151 postings with review count between 500 and 1000
 	
 -- 6.	Show the average star rating for companies in each state. The output should show the state as `state` and the average rating for the state as `avg_rating`. Which state shows the highest average rating?
 
 SELECT location AS state, star_rating AS avg_rating
-FROM data_analyst_jobs;
-
+FROM data_analyst_jobs
+	WHERE star_rating IS NOT NULL
+	ORDER BY star_rating DESC;
+	-- Multiple states received a 5 for average rating. Those states are GA, WI, NY, MA, CA, TN, MD, and VA. Out of all the postings, FL and MN had highest combined average at 4.2 (found using excel).
+	
 -- 7.	Select unique job titles from the data_analyst_jobs table. How many are there?
 
+SELECT COUNT(DISTINCT title) AS unique_job_titles
+FROM data_analyst_jobs;
+	-- 881 unique titles
+	
 -- 8.	How many unique job titles are there for California companies?
 
+SELECT COUNT(DISTINCT title) AS unique_CA_titles
+FROM data_analyst_jobs
+WHERE location = 'CA';
+	-- 230 unique california job titles
+	
 -- 9.	Find the name of each company and its average star rating for all companies that have more than 5000 reviews across all locations. How many companies are there with more that 5000 reviews across all locations?
+
+SELECT DISTINCT company, star_rating 
+FROM data_analyst_jobs
+WHERE review_count > 5000;
+	-- 41 companies with more than 5000 reviews
 
 -- 10.	Add the code to order the query in #9 from highest to lowest average star rating. Which company with more than 5000 reviews across all locations in the dataset has the highest star rating? What is that rating?
 
+SELECT DISTINCT company, star_rating 
+FROM data_analyst_jobs
+WHERE review_count > 5000
+	ORDER BY star_rating DESC;
+	-- American Express has highest star rating of approx 4.199
+
 -- 11.	Find all the job titles that contain the word ‘Analyst’. How many different job titles are there? 
+
+SELECT COUNT(DISTINCT title) AS unique_titles
+FROM data_analyst_jobs
+WHERE title LIKE '%Analyst%';
+	-- 754 different job titles
 
 -- 12.	How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? What word do these positions have in common?
 
+SELECT COUNT(DISTINCT title) AS unique_titles
+FROM data_analyst_jobs
+WHERE title NOT LIKE '%Analyst%'
+	OR title NOT LIKE '%Analytics%';
+	-- 802 titles do not have the words analyst or analytics. 
+	
 -- **BONUS:**
 -- You want to understand which jobs requiring SQL are hard to fill. Find the number of jobs by industry (domain) that require SQL and have been posted longer than 3 weeks. 
 --  - Disregard any postings where the domain is NULL. 
