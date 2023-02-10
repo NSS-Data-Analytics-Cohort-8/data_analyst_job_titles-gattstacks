@@ -8,20 +8,26 @@
 
 SELECT COUNT(*)
 FROM data_analyst_jobs;
-
 	--1793 rows.
 
 -- 2.	Write a query to look at just the first 10 rows. What company is associated with the job posting on the 10th row?
 
-SELECT *
+SELECT company
 FROM data_analyst_jobs
 LIMIT 10;
-
-	-- the company associated with the job posting on the 10th row is ExxonMobil
+	-- ExxonMobil
 
 -- 3.	How many postings are in Tennessee? How many are there in either Tennessee or Kentucky?
 
-
+SELECT COUNT(location) AS tn_postings
+FROM data_analyst_jobs
+WHERE location = 'TN';
+	-- 21 in TN 
+	
+SELECT COUNT(location) AS tn_or_ky_postings
+FROM data_analyst_jobs
+WHERE location = 'TN' OR location = 'KY';
+	-- 27 in either TN or KY
 
 -- 4.	How many postings in Tennessee have a star rating above 4?
 
